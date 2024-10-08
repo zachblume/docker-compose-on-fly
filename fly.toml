@@ -1,0 +1,41 @@
+# fly.toml app configuration file generated for docker-compose-on-fly on 2024-10-08T00:21:30-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'docker-compose-on-fly'
+primary_region = 'ewr'
+
+[build]
+  dockerfile = './Dockerfile'
+
+[deploy]
+  strategy = 'immediate'
+
+[processes]
+  app = '/app/entrypoint.sh'
+
+[[services]]
+  protocol = 'tcp'
+  internal_port = 8080
+  processes = ['app']
+
+  [[services.ports]]
+    port = 80
+    handlers = ['http']
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = "443"
+
+  [[services.http_checks]]
+    interval = '15s'
+    timeout = '2s'
+    grace_period = '5s'
+    method = 'get'
+    path = '/'
+
+[[vm]]
+  cpu_kind = 'shared'
+  cpus = 1
+  memory_mb = 1024

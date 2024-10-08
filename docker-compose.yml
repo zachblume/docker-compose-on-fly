@@ -1,0 +1,5 @@
+services:
+  web:
+    image: nginxinc/nginx-unprivileged:alpine
+    ports:
+      - "8080:8080"
